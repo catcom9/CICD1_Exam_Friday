@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 @Service
 public class RegistrationService {
-    ArrayList<EventRegistration> database;
+    ArrayList<EventRegistration> database = new ArrayList<EventRegistration>();
     boolean createRegistration(EventRegistration details){
         database.add(details);
         return true;

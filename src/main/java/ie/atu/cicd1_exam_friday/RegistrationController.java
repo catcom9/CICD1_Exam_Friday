@@ -5,10 +5,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 public class RegistrationController {
 
-    RegistrationService service;
+    private RegistrationService service;
+
+    public RegistrationController(RegistrationService service) {
+        this.service = service;
+    }
 
     @PostMapping("/registrations")
     public ResponseEntity<EventRegistration> createRegistration(@RequestBody @Valid EventRegistration details){
@@ -20,19 +25,28 @@ public class RegistrationController {
 
     @GetMapping("/registrations/{ticketCode}")
     public ResponseEntity<EventRegistration> getRegistration(@PathVariable String ticketCode){
-        service.getRegistration(ticketCode);
-        return ;
+        EventRegistration details = service.getRegistration(ticketCode);
+        if (details != null){
+            return ResponseEntity.ok(details);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/registrations/{ticketCode}")
     public ResponseEntity<EventRegistration> updateRegistration(@RequestBody @Valid EventRegistration details, @PathVariable String ticketCode){
-        return ;
+        if (service.updateRegistration(ticketCode, details) == 1){
+            return ResponseEntity.ok(details);
+        }
+        return ResponseEntity.notFound().build();
     }
 
 
     @DeleteMapping("/registrations/{ticketCode}")
     public ResponseEntity<EventRegistration> deleteRegistration(@PathVariable String ticketCode){
-        return ;
+        if(service.deleteRegistration(ticketCode) == 1){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
 
