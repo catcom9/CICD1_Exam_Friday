@@ -18,7 +18,7 @@ public class RegistrationController {
     @PostMapping("/registrations")
     public ResponseEntity<EventRegistration> createRegistration(@RequestBody @Valid EventRegistration details){
         if (service.createRegistration(details) == true){
-            return ResponseEntity.ok(details);
+            return ResponseEntity.status(201).body(details);
         }
         return ResponseEntity.notFound().build();
     }
@@ -42,9 +42,9 @@ public class RegistrationController {
 
 
     @DeleteMapping("/registrations/{ticketCode}")
-    public ResponseEntity<EventRegistration> deleteRegistration(@PathVariable String ticketCode){
+    public ResponseEntity deleteRegistration(@PathVariable String ticketCode){
         if(service.deleteRegistration(ticketCode) == 1){
-            return ResponseEntity.ok().build();
+            return ResponseEntity.status(204).build();
         }
         return ResponseEntity.notFound().build();
     }

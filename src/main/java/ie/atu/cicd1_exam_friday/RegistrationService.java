@@ -9,6 +9,11 @@ import java.util.ArrayList;
 public class RegistrationService {
     ArrayList<EventRegistration> database = new ArrayList<EventRegistration>();
     boolean createRegistration(EventRegistration details){
+        for (int i = 0; i != database.size(); i++){
+            if(database.get(i).getTicketCode().equals(details.getTicketCode())){
+                throw new ServiceExpection("DuplicateTicketCodeException");
+            }
+        }
         database.add(details);
         return true;
     }
@@ -19,7 +24,7 @@ public class RegistrationService {
                 return database.get(i);
             }
         }
-        return null;
+        throw new ServiceExpection("RegistrationNotFound");
     }
 
     int updateRegistration(String ticketCode, EventRegistration details){
@@ -30,7 +35,7 @@ public class RegistrationService {
                 return 1;
             }
         }
-        return 0;
+        throw new ServiceExpection("RegistrationNotFound");
     }
 
     int deleteRegistration(String ticketCode){
